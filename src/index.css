@@ -1,0 +1,221 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*base style*/
+
+@layer base {
+    body {
+        @apply font-roboto text-[14px] text-[#333] min-h-dvh;
+    }
+
+    input,
+    textarea {
+        @apply outline-0 border-0 transition;
+    }
+
+    button {
+        @apply rounded transition;
+    }
+
+    input:focus {
+        @apply border border-stone-500;
+    }
+
+    textarea:focus {
+        @apply border border-stone-500;
+    }
+
+
+    input::-webkit-search-cancel-button {
+        appearance: none;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+@layer utilities {
+    a {
+        @apply text-[#333];
+    }
+}
+
+*:disabled {
+    cursor: not-allowed;
+}
+
+#root {
+    @apply h-full overflow-x-hidden;
+}
+
+svg {
+    @apply w-[17px] h-[17px] inline-block fill-current align-middle;
+}
+
+.mgr {
+    @apply mr-4 sm:mr-[60px] lg:mr-[80px];
+}
+
+.loader {
+    background: conic-gradient(#0000 10%, #6f6a6a);
+    --webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+    animation: rotate 1.5s infinite linear;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+.pageWidth {
+    @apply m-[0_auto] px-3 xs:px-4 sm:px-5 lg:px-7 xl:px-10 max-w-[1300px];
+}
+
+.sectionTitle {
+    @apply relative inline-block;
+}
+
+.sectionTitle::before,
+.sectionTitle::after {
+    @apply content-[""] block w-12 lg:w-16 h-[2px] bg-[#f9a81a] absolute top-[50%] translate-y-[-50%];
+}
+
+.sectionTitle::before {
+    @apply right-[calc(100%_+_20px)];
+}
+
+.sectionTitle::after {
+    @apply left-[calc(100%_+_20px)];
+}
+
+.bar {
+    width: calc(100% - -1559%);
+    background-size: 1rem 1rem;
+    background-image: linear-gradient(135deg, #f9a81a 0 25%, #0000 25% 50%, #f9a81a 50% 75%, #0000 75% 100%);
+    box-shadow: 0 0 5px #0000004d;
+}
+
+.formInput {
+    @apply w-full h-10 text-sm font-medium rounded border border-[#c4c3ca] transition placeholder:text-sm focus:placeholder:opacity-0;
+}
+
+.swiperButton {
+    @apply bg-white flex justify-center items-center w-10 h-10 md:w-14 md:h-14 top-[50%] translate-y-[-50%] rounded-full absolute z-10 shadow cursor-pointer focus:outline-none invisible opacity-0 transition ease-in-out group-hover/swiperBtn:visible group-hover/swiperBtn:opacity-100;
+}
+
+.cartItemBtn {
+    @apply w-8 h-7 text-center border border-[#ddd];
+}
+
+.cartItemBtn svg {
+    @apply w-[14px] h-[14px];
+}
+
+.activeList svg {
+    @apply rotate-180;
+}
+
+.hero-img {
+    width: 100%;
+    height: auto;
+}
+
+@media (max-width:575px) {
+    .hero-img {
+        height: 30dvh;
+    }
+}
+
+/* footer section style*/
+
+footer a {
+    @apply text-white;
+}
+
+.footerLinkTitle {
+    @apply text-[13px] lg:text-sm font-medium uppercase tracking-[1px] mb-2;
+}
+
+.footerLinkDesc {
+    @apply text-xs sm:text-sm mb-2;
+}
+
+.footerList li {
+    @apply text-[13px] mb-4;
+}
+
+.socialIcon svg {
+    @apply w-5 h-5
+}
+
+/* header section custom style*/
+.btnIcon {
+    @apply text-white bg-black p-3 rounded-md relative inline-block;
+}
+
+
+/* Tooltip text */
+.tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.btnIcon:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    background: #17A2B8;
+    pointer-events: auto;
+    -webkit-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 17px;
+    width: 17px;
+    border: none;
+    border-radius: 50%;
+    background: #17A2B8;
+    pointer-events: auto;
+    -moz-appearance: none;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
+}
