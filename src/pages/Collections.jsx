@@ -14,7 +14,7 @@ export default function Collections() {
             <Header />
             <div className="p-3 sm:p-5 lg:p-10">
                 <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr]">
-                    <div className="overflow-hidden">
+                    <div className="flex lg:flex-col overflow-hidden">
                         <PriceFilter onPriceChange={handlePriceChange} />
                         <Stock />
                     </div>
@@ -46,20 +46,18 @@ function Stock() {
     };
 
     return (
-        <div className="bg-white">
-            <article className="mb-5">
+        <>
+            <div className="bg-white mb-5">
                 <h1 className="text-lg mb-4">Availability</h1>
-                <div>
-                    <div className="flex items-center gap-1">
-                        <input type="radio" value={"radio1"} checked={selectedRadio === "radio1"} onChange={handleRadioChange} name="stock" id="instock" className="" />
-                        <label htmlFor="instock">In Stock</label>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <input type="radio" value={"radio2"} checked={selectedRadio === "radio2"} onChange={handleRadioChange} name="stock" id="outstock" className="" />
-                        <label htmlFor="outstock">Out Stock</label>
-                    </div>
+                <div className="flex items-center gap-1">
+                    <input type="radio" value={"radio1"} checked={selectedRadio === "radio1"} onChange={handleRadioChange} name="stock" id="instock" className="" />
+                    <label htmlFor="instock">In Stock</label>
                 </div>
-            </article>
-        </div>
+                <div className="flex items-center gap-1">
+                    <input type="radio" value={"radio2"} checked={selectedRadio === "radio2"} onChange={handleRadioChange} name="stock" id="outstock" className="" />
+                    <label htmlFor="outstock">Out Stock</label>
+                </div>
+            </div>
+        </>
     )
 }

@@ -1,6 +1,7 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import supabase, { supabaseUrl } from "./supabase";
 
+
 export const apiAuth = createApi({
     reducerPath: 'apiAuth',
     baseQuery: fakeBaseQuery(),
@@ -77,10 +78,8 @@ export const apiAuth = createApi({
                     let updateData = {};
 
                     if (fullName) updateData.fullName = fullName;
-                    // if (phone) updateData.phone = String(phone);
                     if (phone) updateData.phone = phone;
                     if (password) updateData.password = password;
-                    console.log("Update Data:", updateData);
 
                     const { data, error } = await supabase.auth.updateUser(updateData);
                     if (error) {
@@ -97,4 +96,3 @@ export const apiAuth = createApi({
 });
 
 export const { useSignupMutation, useLoginMutation, useLogoutMutation, useGetCurrentUserQuery, useUpdateUserMutation } = apiAuth;
-

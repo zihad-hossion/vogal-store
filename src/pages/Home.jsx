@@ -5,6 +5,7 @@ import Blogs from "../features/blogs/Blogs";
 import Hero from "../components/hero/Hero";
 import Exclusive from "../components/Exclusive";
 import Support from "../components/Support";
+import UserList from "./UserList";
 
 
 function Home() {
@@ -17,6 +18,7 @@ function Home() {
             <Exclusive />
             <Support />
             <Blogs />
+            {/* <UserList /> */}
         </>
     )
 };

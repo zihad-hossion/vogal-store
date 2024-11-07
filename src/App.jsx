@@ -1,5 +1,6 @@
 import { useEffect, useContext } from 'react';
-import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import toast, { Toaster } from "react-hot-toast";
 import { useGetProductsQuery } from './services/apiProducts';
 import ProtectedRoute from './features/authentication/ProtectedRoute';
@@ -16,6 +17,9 @@ import Account from './pages/Account';
 import Collections from './pages/Collections';
 import MenuSidebar from './ui/MenuSidebar';
 import Loader from './ui/Loader';
+import ResetProtectedRoute from './features/authentication/ResetProtectedRoute';
+import UpdatePasswordForm from './features/authentication/UpdatePasswordForm';
+
 
 function Layout() {
   const { pathname } = useLocation();
@@ -47,6 +51,7 @@ function Layout() {
 }
 
 export default function App() {
+  const isAuthenticated = useSelector((state) => state?.auth?.isAuthenticated);
 
   return (
     <>
@@ -56,7 +61,8 @@ export default function App() {
           <Route path='/carts' element={<Carts />} />
           <Route path='/collections' element={<Collections />} />
           <Route path='/collections/:productId' element={<ProductDetail />} />
-          <Route path='/login' element={<LoginForm />} />
+          {!isAuthenticated && <Route path='/login' element={<LoginForm />} />}
+          <Route path='/login/reset' element={<ResetProtectedRoute><UpdatePasswordForm /></ResetProtectedRoute>} />
           <Route path='/signup' element={<SignupForm />} />
           <Route path='/account' element={<ProtectedRoute><Account /></ProtectedRoute>} />
         </Route>

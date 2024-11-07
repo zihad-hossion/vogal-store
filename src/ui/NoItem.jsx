@@ -6,15 +6,15 @@ import { FiShoppingCart } from "react-icons/fi";
 
 export default function NoItem() {
     const navigate = useNavigate();
-    const { isCartOpen } = useContext(CartContext);
+    const { setCartOpen } = useContext(CartContext);
 
     function handleShop() {
-        isCartOpen(false);
+        setCartOpen(false);
         navigate("/collections");
     }
 
     function handleLogin() {
-        isCartOpen(false);
+        setCartOpen(false);
         navigate("/login")
     }
 

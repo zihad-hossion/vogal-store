@@ -1,5 +1,9 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { setUser } from "../slices/authSlice";
+import supabase from "../services/supabase";
 import { useUpdateUserMutation } from "../services/apiAuth";
 import SectionContainer from "../ui/SectionContainer";
 import useUser from "../features/authentication/useUser";
@@ -11,7 +15,7 @@ import useWindowSize from "../hooks/useWindowSize";
 import useClickOutside from "../hooks/useClickOutside";
 import { DrawerContext } from "../context/DrawerContext";
 import { IoCloseOutline } from "react-icons/io5";
-import { useSelector } from "react-redux";
+
 
 export default function Account() {
     const { isDrawerOpen, setDrawerOpen, activeSection, setActiveSection, } = useContext(DrawerContext);
@@ -54,10 +58,10 @@ export default function Account() {
 function DesktopAccount({ data, activeSection, onSectionChange }) {
 
     return (
-        <article className="w-full grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-10">
-            <div>
+        <article className="w-full grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-10">
+            <>
                 <Info user={data} activeSection={activeSection} onSectionChange={onSectionChange} />
-            </div>
+            </>
             <div className="min-h-96">
                 {activeSection === 'profile' && <Profile user={data} />}
                 {activeSection === 'orders' && <MyOrder />}
@@ -126,7 +130,6 @@ function Info({ user, onSectionChange, activeSection, isDrawerOpen }) {
                 onClick={() => onSectionChange('profile')}
             >
                 {isDrawerOpen ? <span className="text-base font-medium cursor-pointer tracking-wider">Profile</span> : <>  Welcome, <span className="font-medium tracking-wide uppercase ml-1">{fullName}</span></>}
-
             </h2>
             <p
                 className={`text-base font-medium p-3 mb-1 cursor-pointer ${activeSection === 'orders' ? 'bg-blue-100' : ''}`}
@@ -154,14 +157,18 @@ function Profile({ user }) {
     const [fullName, setFullName] = useState(currentName || "");
     const [phone, setPhone] = useState(currentPhone || "");
     const [updateUser, { isLoading }] = useUpdateUserMutation();
+    const dispatch = useDispatch();
 
     async function handleUserForm(e) {
         e.preventDefault();
         const formattedPhone = phone.startsWith('+88') ? phone : `+88${phone}`;
 
         try {
-            await updateUser({ fullName, phone: formattedPhone }).unwrap();
-            console.log("Profile updated successfully!");
+            const { data, error } = await supabase.auth.updateUser({ fullName, phone: formattedPhone });
+            if (data) {
+                dispatch(setUser(data?.user));
+                toast.success("Profile updated successfully!");
+            }
         } catch (error) {
             console.error("Update failed", error);
         }
@@ -169,23 +176,28 @@ function Profile({ user }) {
 
     return (
         <article className="font-medium">
-            <h1 className="text-base mb-3">Account Details</h1>
-            <form onSubmit={handleUserForm} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-20">
-                <FormRow label={"Name"} customStyle={"grid grid-cols-[150px_1fr] items-center"}>
-                    <input type="text" id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} className="formInput focus:border-blue-700 p-2" required />
-                </FormRow>
-                <FormRow label={"Mobile Number"} customStyle={"grid grid-cols-[150px_1fr] items-center"}>
-                    <input type="text" id="number" value={phone} onChange={(e) => setPhone(e.target.value)} className="focus:border-blue-700 p-2 formInput" required />
-                </FormRow>
-                <FormRow label={"Email Address"} customStyle={"grid grid-cols-[150px_1fr] items-center"}>
-                    <input type="email" id="email" disabled value={email} className="text-gray-500 bg-gray-200 p-2 formInput" aria-disabled="true" />
-                </FormRow>
-                <div className="flex justify-end">
-                    <button className="w-40 text-white bg-blue-600 hover:bg-blue-900 rounded transition p-3" aria-busy={isLoading}>
-                        {isLoading ? 'Updating...' : 'Update Profile'}
-                    </button>
-                </div>
-            </form>
+            <div>
+                <h1 className="text-base mb-3">Account Details</h1>
+                <form onSubmit={handleUserForm} className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-20">
+                    <FormRow label={"Name"}>
+                        <input type="text" id="name" value={fullName} onChange={(e) => setFullName(e.target.value)} className="formInput focus:border-blue-700 p-2" required />
+                    </FormRow>
+                    {/* <FormRow label={"Mobile Number"} customStyle={"grid grid-cols-[100px_1fr] sm:grid-cols-[150px_1fr] items-center"}> */}
+                    <FormRow label={"Mobile Number"}>
+                        <input type="text" id="number" value={phone} onChange={(e) => setPhone(e.target.value)} className="focus:border-blue-700 p-2 formInput" required />
+                    </FormRow>
+                    <FormRow label={"Email Address"}>
+                        {/* <FormRow label={"Email Address"} customStyle={"grid grid-cols-[100px_1fr] sm:grid-cols-[150px_1fr] items-center"}> */}
+                        <input type="email" id="email" disabled value={email} className="text-gray-500 bg-gray-200 p-2 formInput" aria-disabled="true" />
+                    </FormRow>
+                    {/* <div className="flex justify-end"> */}
+                    <div className="text-right">
+                        <button className="w-40 text-white bg-blue-600 hover:bg-blue-900 rounded transition p-3" aria-busy={isLoading}>
+                            {isLoading ? 'Updating...' : 'Update Profile'}
+                        </button>
+                    </div>
+                </form>
+            </div>
             <UpdatePasswordForm />
         </article>
     );
